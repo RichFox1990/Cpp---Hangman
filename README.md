@@ -6,3 +6,24 @@ Player wins if they guess the film's letters before they run out of incorrect gu
 
 Add or remove additional films as you please to expand/restrict the choices.
 
+##Versions:
+
+###Initial commit 
+- frame of program and basic display setup)
+
+
+### Update 1:
+- Added - guessing functionality
+- added - Previous guess tracking and display
+- added - Repeated guess handle logic
+- Added - win/lose logic
+- Added - Play again loop
+
+### Update 2:
+- Added - Functionality to guess the whole word
+- Added - display of previous guesses and guessed words seperately
+- Added - word guessing not case sensitive (all checks done in lower case)
+- Added - More film names
+- Added - Delay to the command line to improve text feedback
+- edit - added more functions for displays (tidy up code)
+- edit - cleared up some function args that no longer need passing
