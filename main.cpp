@@ -5,7 +5,7 @@
 #include <fstream>
 #include <vector>
 #include "windows.h"
-//#include <unistd.h> (for Unux)
+//#include <unistd.h> (for Unix)
 
 using namespace std;
 
@@ -71,6 +71,7 @@ string createLowerCaseAnswer(const string& word);
 int handleGuess(const string&);
 void displayWordState();
 void displayGuessedItems();
+void displayLives(const int& incorrectGuesses);
 
 
 int main()
@@ -87,14 +88,14 @@ int main()
 
 		if (firstPlay)
 		{
-			cout << "|---------------WELCOME TO HANGMAN---------------|\n\n";
-			Sleep(1500);
+			cout << "|------------------------------------------------------------|\n|---------------------WELCOME TO HANGMAN---------------------|\n|------------------------------------------------------------|\n\n";
+			Sleep(1250);
 			cout << "Guess letters to reveal their position within the film name.\n\n";
-			Sleep(1500);
+			Sleep(1250);
 			cout << "However, be careful. You have a limited number of guesses before you lose.\n\n";
-			Sleep(1500);
+			Sleep(1250);
 			cout << "To win, correctly enter the film name before you run out of attempts.\n\nSpaces, ':' and '-' are shown automatically if the hidden word(s) contain them.\n\n";
-			Sleep(2500);
+			Sleep(2000);
 			cout << "| ------------------ - LETS BEGIN------------------ - | \n\n\n";
 			firstPlay = false;
 		}
@@ -109,18 +110,21 @@ int main()
 		while ( gameStatus == 0 )
 		{
 			// Display board for the current state of the word being guessed
+			displayLives(wrongGuessTotal);
 			displayWordState();
 			
-			Sleep(500);
+			Sleep(350);
 
 			// Display already guessed words and letters (if any)
 			displayGuessedItems();
+			cout << endl;
 
-			Sleep(400);
+			Sleep(250);
 
 			cout << "Enter your letter guess:\n:- ";
 			getline(cin, guess);
-			cout << endl;
+
+			cout << "\x1b[2J\x1b[H"; // clears console
 
 			gameStatus = handleGuess(guess);
 
@@ -132,6 +136,7 @@ int main()
 
 			case -1:
 				// Player ran of guesses
+				displayLives(wrongGuessTotal);
 				cout << "You have ran out of guesses.\n\n||--YOU LOSE--||\n\n";
 				break;
 
@@ -152,6 +157,7 @@ int main()
 		cin >> playAgain;
 		cout << "\n\n";
 		cin.ignore();
+		cout << "\x1b[2J\x1b[H"; // clears console
 
 	} while (playAgain == 'y');
 
@@ -294,7 +300,7 @@ returns int;-
 			}
 			else
 			{
-				cout << "XX-- That guess was incorrect... --XX\n\n";
+				cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\nXX-- That guess was incorrect... --XX\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n\n";
 				return 0; // continue game
 			}
 	}
@@ -308,7 +314,7 @@ returns int;-
 
 		else
 		{
-			cout << "<<-- You guessed correctly-->>\n'" << guess << "' was revealed within the word(s).\n\n";
+			cout << "<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>\n<<-- You guessed correctly-->>\n<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>\n\n'" << guess << "' was revealed within the word(s).\n\n";
 			return 0;
 		}
 	}
@@ -362,6 +368,122 @@ void displayGuessedItems()
 		cout << "{ ";
 		for (int i = 0; i < guessedWords.size(); i++)
 			cout << guessedWords[i] << ", ";
-		cout << "}\n\n";
+		cout << "}\n";
 	}
 }
+
+void displayLives(const int& incorrectGuesses)
+{
+
+	switch (incorrectGuesses)
+	{
+	case 1: 
+		cout << "\
+    \n\
+    \n\
+    \n\
+    \n\
+    \n\
+  __ _____\n\n";
+		break;
+	case 2:
+		cout << "\
+    \n\
+    |\n\
+    |\n\
+    |\n\
+    |\n\
+  __|_____\n\n";
+		break;
+	case 3:
+		cout << "\
+    _______\n\
+    |\n\
+    |\n\
+    |\n\
+    |\n\
+  __|_____\n\n";
+		break;
+	case 4:
+		cout << "\
+    _______\n\
+    |/\n\
+    |\n\
+    |\n\
+    |\n\
+  __|_____\n\n";
+		break;
+	case 5:
+		cout << "\
+    _______\n\
+    |/    |\n\
+    |\n\
+    |\n\
+    |\n\
+  __|_____\n\n";
+		break;
+	case 6:
+		cout << "\
+    _______\n\
+    |/    |\n\
+    |     O \n\
+    |\n\
+    |\n\
+  __|_____\n\n";
+		break;
+	case 7:
+		cout << "\
+    _______\n\
+    |/    |\n\
+    |     O \n\
+    |     |\n\
+    |\n\
+  __|_____\n\n";
+		break;
+	case 8:
+		cout << "\
+    _______\n\
+    |/    |\n\
+    |    \\O \n\
+    |     |\n\
+    |\n\
+  __|_____\n\n";
+		break;
+	case 9:
+		cout << "\
+    _______\n\
+    |/    |\n\
+    |    \\O/ \n\
+    |     |\n\
+    |\n\
+  __|_____\n\n";
+		break;
+	case 10:
+		cout << "\
+    _______\n\
+    |/    |\n\
+    |    \\O/ \n\
+    |     |\n\
+    |    / \n\
+  __|_____\n\n";
+		break;
+	case 11:
+		cout << "\
+    _______\n\
+    |/    |\n\
+    |    \\O/ \n\
+    |     |\n\
+    |    / \\\n\
+  __|_____\n\n";
+		break;
+	default:
+		break;
+	}
+}
+//cout << "\
+ //   _______\n\
+ //   |/    |\n\
+ //   |    \\O/ \n\
+ //   |     |\n\
+ //   |    / \\\n\
+ // __|_____\n\n";
